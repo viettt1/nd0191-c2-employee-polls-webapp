@@ -1,13 +1,13 @@
-import { Navigate } from "react-router-dom";
-import { connect } from "react-redux";
+import { Navigate } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 const LoginValid = ({ children, loggedIn }) => {
-    const redirectUrl = window.location.href.toString().split(window.location.host)[1];
-    return loggedIn ? children : <Navigate to={`/login?redirectTo=${redirectUrl}`} />;
-};
+  const redirectUrl = window.location.href.toString().split(window.location.host)[1]
+  return loggedIn ? children : <Navigate to={'/login?redirectTo=' + redirectUrl} />
+}
 
 const mapStateToProps = ({ authedUser }) => ({
-    loggedIn: !!authedUser,
-});
+  loggedIn: !!authedUser
+})
 
-export default connect(mapStateToProps)(LoginValid);
+export default connect(mapStateToProps)(LoginValid)

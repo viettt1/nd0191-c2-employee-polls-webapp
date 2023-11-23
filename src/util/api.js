@@ -6,7 +6,7 @@ export function getInitialData () {
         _getQuestions(),
     ]).then(([users, questions]) => ({
         users,
-        questions,
+        questions
     }))
 }
 
