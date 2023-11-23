@@ -1,42 +1,47 @@
-import { connect } from "react-redux";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { handleAddAnswer } from "../actions/questions";
+import { connect } from 'react-redux'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { handleAddAnswer } from '../actions/questions'
 
-const PollPage = ({ dispatch, authedUser, question, author }) => {
+const PollPage = ({ dispatch, authedUser, users, questions }) => {
+    const navigate = useNavigate()
 
-    const navigate = useNavigate();
+    const { id } = useParams()
+
+    const question = Object.values(questions).find((question) => question.id === id);
+    const author = Object.values(users).find((user) => user.id === question.author);
+
     if (!authedUser || !question || !author) {
-        return <Navigate to="/404" />;
+        return <div>Loading...</div>
     }
 
-    const hasVotedForOptionOne = question.optionOne.votes.includes(authedUser.id);
-    const hasVotedForOptionTwo = question.optionTwo.votes.includes(authedUser.id);
-    const hasVoted = hasVotedForOptionOne || hasVotedForOptionTwo;
-    const imageURL = `.${author?.avatarURL}`;
+    const hasVotedForOptionOne = question.optionOne.votes.includes(authedUser.id)
+    const hasVotedForOptionTwo = question.optionTwo.votes.includes(authedUser.id)
+    const hasVoted = hasVotedForOptionOne || hasVotedForOptionTwo
+    const imageURL = `.${author?.avatarURL}`
 
     const handleOptionOne = (e) => {
-        e.preventDefault();
-        dispatch(handleAddAnswer(question.id, "optionOne"));
-        navigate("/");
-    };
+        e.preventDefault()
+        dispatch(handleAddAnswer(question.id, 'optionOne'))
+        navigate('/')
+    }
 
     const handleOptionTwo = (e) => {
-        e.preventDefault();
-        dispatch(handleAddAnswer(question.id, "optionTwo"));
-        navigate("/");
-    };
+        e.preventDefault()
+        dispatch(handleAddAnswer(question.id, 'optionTwo'))
+        navigate('/')
+    }
 
     const calcPercentage = (option, question) => {
-        const numberVotesTotal = question.optionOne.votes.length + question.optionTwo.votes.length;
+        const numberVotesTotal = question.optionOne.votes.length + question.optionTwo.votes.length
         switch (option) {
-            case "optionOne":
-                return question.optionOne.votes.length / numberVotesTotal * 100 + " %";
-            case "optionTwo":
-                return question.optionTwo.votes.length / numberVotesTotal * 100 + " %";
+            case 'optionOne':
+                return question.optionOne.votes.length / numberVotesTotal * 100 + ' %'
+            case 'optionTwo':
+                return question.optionTwo.votes.length / numberVotesTotal * 100 + ' %'
             default:
-                return "";
+                return ''
         }
-    };
+    }
 
     return (
         <div className="container-fluid">
@@ -46,9 +51,12 @@ const PollPage = ({ dispatch, authedUser, question, author }) => {
                         <h4>Poll by {author.id}</h4>
                     </div>
                     <div className="p-2">
-                        <img src={imageURL} style={{ height: '250px', width: '250px', marginTop: '10px' }} className="card-img-top" alt="Profile" />
+                        <img src={imageURL} style={{ height: '100px', width: '100px', marginTop: '10px' }} className="card-img-top" alt="Profile" />
                     </div>
                 </div>
+            </div>
+            <div className="row">
+                <h1 className="text-center">Would You Rather</h1>
             </div>
             <div className="row text-center">
                 <div className="col-6">
@@ -63,7 +71,7 @@ const PollPage = ({ dispatch, authedUser, question, author }) => {
                                         <p style={{ margin: '0px' }}>Click</p>
                                     }
                                     {hasVoted &&
-                                        <p style={{ margin: '0px' }}>Votes: {question.optionOne.votes.length} ({calcPercentage("optionOne", question)})</p>
+                                        <p style={{ margin: '0px' }}>Votes: {question.optionOne.votes.length} ({calcPercentage('optionOne', question)})</p>
                                     }
                                 </button>
                             </div>
@@ -72,7 +80,7 @@ const PollPage = ({ dispatch, authedUser, question, author }) => {
                             hasVoted && question.optionOne.votes.length > 0 &&
                             <div className="card-footer text-muted">
                                 {question.optionOne.votes.map((item) => {
-                                    return <p key={item}>{item}</p>;
+                                    return <p key={item}>{item}</p>
                                 })}
                             </div>
                         }
@@ -91,7 +99,7 @@ const PollPage = ({ dispatch, authedUser, question, author }) => {
                                     }
 
                                     {
-                                        hasVoted && <p style={{ margin: '0px' }}>Votes: {question.optionTwo.votes.length} ({calcPercentage("optionTwo", question)})</p>
+                                        hasVoted && <p style={{ margin: '0px' }}>Votes: {question.optionTwo.votes.length} ({calcPercentage('optionTwo', question)})</p>
                                     }
                                 </button>
                             </div>
@@ -100,7 +108,7 @@ const PollPage = ({ dispatch, authedUser, question, author }) => {
                             hasVoted && question.optionTwo.votes.length > 0 &&
                             <div className="card-footer text-muted">
                                 {question.optionTwo.votes.map((item) => {
-                                    return <p key={item}>{item}</p>;
+                                    return <p key={item}>{item}</p>
                                 })}
                             </div>
                         }
@@ -108,17 +116,15 @@ const PollPage = ({ dispatch, authedUser, question, author }) => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
 const mapStateToProps = ({ authedUser, users, questions }) => {
     try {
-        const question = Object.values(questions).find((question) => question.id === useParams().id);
-        const author = Object.values(users).find((user) => user.id === question.author);
-        return { authedUser, question, author };
+        return { authedUser, users, questions }
     } catch (e) {
         return <Navigate to="/404" />;
     }
-};
+}
 
-export default connect(mapStateToProps)(PollPage);
+export default connect(mapStateToProps)(PollPage)

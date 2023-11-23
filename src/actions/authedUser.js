@@ -4,7 +4,7 @@ export const LOGOUT_AUTHED_USER = "LOGOUT_AUTHED_USER";
 export function loginAuthenticatedUser(authedUser) {
     return {
         type: LOGIN_AUTHENTICATED_USER,
-        authedUser,
+        authedUser
     };
 }
 

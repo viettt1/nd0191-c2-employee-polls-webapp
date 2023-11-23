@@ -16,12 +16,10 @@ const Dashboard = ({ authedUser, questions, users }) => {
                     <div className="row" style={{ borderBottom: 'solid', textAlign: 'center', marginTop: '60px' }}>
                         <h3>New Questions</h3>
                     </div>
-                    <div className="row row-cols-3">
+                    <div className="row row-cols-2">
                         {questions.filter(unanswered).map((question) => (
                             <div className="col" style={{ paddingBottom: 'calc(var(--bs-gutter-x) * .5)', paddingTop: 'calc(var(--bs-gutter-x) * .5)' }} key={question.id}>
-                                <div className="card" >
-                                    <Card question={question} author={users[question.author]} hasVoted={false} />
-                                </div>
+                                <Card question={question} author={users[question.author]} hasVoted={false} />
                             </div>
                         ))}
                     </div>
@@ -32,12 +30,10 @@ const Dashboard = ({ authedUser, questions, users }) => {
                     <div className="row" style={{ borderBottom: 'solid', textAlign: 'center', marginTop: '60px' }}>
                         <h3>Answered Questions</h3>
                     </div>
-                    <div className="row row-cols-3">
+                    <div className="row row-cols-2">
                         {questions.filter(answered).map((question) => (
                             <div className="col" style={{ paddingBottom: 'calc(var(--bs-gutter-x) * .5)', paddingTop: 'calc(var(--bs-gutter-x) * .5)' }} key={question.id}>
-                                <div className="card" >
-                                    <Card question={question} author={users[question.author]} hasVoted={true}/>
-                                </div>
+                                <Card question={question} author={users[question.author]} hasVoted={true} />
                             </div>
                         ))}
                     </div>

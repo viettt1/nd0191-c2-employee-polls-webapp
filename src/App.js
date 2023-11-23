@@ -14,8 +14,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App({ dispatch, loggedIn }) {
   useEffect(() => {
-    dispatch(handleInitialData());
-  });
+    dispatch(handleInitialData())
+  }, [dispatch])
 
   return (
     <div className="container mx-auto py-4">
