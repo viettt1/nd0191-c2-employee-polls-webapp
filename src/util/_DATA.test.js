@@ -33,6 +33,10 @@ describe("_saveQuestion", () => {
             })
 
             expect(response.author).toBe('tylermcginnis')
+            expect(response.optionOne.text).toBe('option one test')
+            expect(response.optionTwo.text).toBe('option two test')
+            expect(response.id).toBeDefined();
+            expect(response.timestamp).toBeDefined();
         }, 1000)
     });
 
